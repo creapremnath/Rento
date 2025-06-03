@@ -1,0 +1,96 @@
+/* Container max width */
+.container {
+  max-width: 1140px;
+}
+
+/* Card styling */
+.property-card .card {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  height: 280px;          /* Reduced from 320px */
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.property-card .card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.card-img-top {
+  height: 120px;          /* Reduced from 140px */
+  object-fit: cover;
+}
+
+.card-body {
+  flex-grow: 1;
+  padding: 0.5rem 0.8rem; /* Reduced padding */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-weight: 600;
+  font-size: 1rem;        /* Reduced font size */
+  margin-bottom: 0.25rem;
+}
+
+.text-muted {
+  font-size: 0.8rem;      /* Reduced font size */
+  margin-bottom: 0.3rem;
+}
+
+.badge {
+  font-size: 0.75rem;     /* Slightly smaller badge */
+  padding: 0.2em 0.4em;
+}
+
+/* Filters styling */
+.filters select,
+.filters input[type="range"] {
+  border-radius: 8px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+  padding: 0.3rem 0.6rem; /* Smaller padding */
+}
+
+.filters label {
+  font-weight: 600;
+  font-size: 0.85rem;     /* Smaller label font */
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .card-img-top {
+    height: 100px;        /* Smaller on tablets */
+  }
+}
+
+@media (max-width: 576px) {
+  .filters {
+    flex-direction: column;
+  }
+}
+
+.add-property-card {
+  border-radius: 12px;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  height: 280px;           /* Reduced from 320px */
+  border: 2px dashed #635afe;
+  color: #635afe;
+  font-size: 3rem;         /* Smaller plus sign */
+  font-weight: 700;
+  user-select: none;
+}
+
+.add-property-card:hover {
+  background-color: #e7f1ff;
+}
+

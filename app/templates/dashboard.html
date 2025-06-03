@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+
+{%block main%}
+{% load static %}
+<link rel="stylesheet" href="{% static 'dashboard.css' %}">
+
+<div class="container-fluid">
+    <h3 class="mb-4">Welcome back, Premnath 👋</h3>
+
+    <!-- Dashboard Content -->
+    
+     <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card p-4" id="property">
+        <div class="d-flex align-items-center">
+          <div class="card-icon me-3"><i class="bi bi-house-door"></i></div>
+          <div>
+            <h6>Total Properties</h6>
+            <h5>12</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-4" id="tenant">
+        <div class="d-flex align-items-center">
+          <div class="card-icon me-3"><i class="bi bi-people"></i></div>
+          <div>
+            <h6>Total Tenants</h6>
+            <h5>8</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-4" id="rent">
+        <div class="d-flex align-items-center">
+          <div class="card-icon me-3"><i class="bi bi-wallet2"></i></div>
+          <div>
+            <h6>Rent This Month</h6>
+            <h5>₹48,000</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-4" id="pending">
+        <div class="d-flex align-items-center">
+          <div class="card-icon me-3"><i class="bi bi-cash-coin"></i></div>
+          <div>
+            <h6>Pending Rent</h6>
+            <h5>₹12,000</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-4" id="advance">
+        <div class="d-flex align-items-center">
+          <div class="card-icon me-3"><i class="bi bi-bank"></i></div>
+          <div>
+            <h6>Advance Balance</h6>
+            <h5>₹25,000</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+
+
+
+
+
+
+        <!-- Dashboard Content Ends -->
+
+
+
+
+        {%endblock%}
