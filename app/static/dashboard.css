@@ -1,0 +1,77 @@
+body {
+  background: #f5f7fa;
+  padding: 20px;
+}
+
+.card {
+  background: white; /* Solid background for cards */
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  transition: 0.3s;
+  color: rgb(0, 0, 0); /* keep white text on cards? If not, change this to dark */
+  /* If you want dark text, use color: #333; */
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Remove fixed background from general icon */
+.card-icon {
+  font-size: 2rem;
+  color: white;
+  border-radius: 12px;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Cards have solid background colors */
+#property {
+  background: white;
+}
+
+#tenant {
+  background: white;
+}
+
+#rent {
+  background: white;
+}
+
+#advance {
+  background: white;
+}
+
+#pending {
+  background: white;
+}
+
+/* Gradient backgrounds only for icons */
+#property .card-icon {
+  background: linear-gradient(135deg, #3b47b1, #7F9CF5);
+}
+
+#tenant .card-icon {
+  background: linear-gradient(135deg, #319059, #9AE6B4);
+}
+
+#rent .card-icon {
+  background: linear-gradient(135deg, #227874, #81E6D9);
+}
+
+#advance .card-icon {
+  background: linear-gradient(135deg, #d04789, #FBB6CE);
+}
+
+#pending .card-icon {
+  background: linear-gradient(135deg, #f23030, #FEB2B2);
+}
+
+/* Optional: Table head background */
+.table thead {
+  background-color: #e9ecef;
+}

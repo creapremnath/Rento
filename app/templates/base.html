@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rento Main Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous" />
+    <!-- Bootstrap Icons CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    
+
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+        crossorigin="anonymous"></script>
+
+
+
+    <!-- SideNav Bar -->
+    <div class="sidebar">
+        <nav class="nav flex-column"> 
+            <nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <span class="navbar-brand mb-0 h1">Rento</span>
+  </div>
+</nav>
+           
+            <a class="nav-link {% if request.path == '/' %}active{% endif %}"" href="{% url 'home' %}">
+    <span class="icon">
+        <i class="bi bi-grid"></i>
+    </span>
+    <span class="description">
+        Dashboard
+    </span>
+</a>
+
+                <a class="nav-link {% if request.path == '/property/' %}active{% endif %}" href="{% url 'property' %}">
+                    <span class="icon">
+                        <i class="bi bi-house-door"></i>
+                    </span>
+
+                    <span class="description">
+                        My Properties
+                    </span>
+
+                    <a class="nav-link {% if request.path == '/tenant/' %}active{% endif %}" href="{% url 'tenant' %}">
+                        <span class="icon">
+                            <i class="bi bi-people"></i>
+                        </span>
+
+                        <span class="description">
+                            Tenants
+                        </span>
+                        <a class="nav-link {% if request.path == '/rent/' %}active{% endif %}" href="{% url 'rent' %}">
+                            <span class="icon">
+                                <i class="bi bi-cash-coin"></i>
+                            </span>
+
+                            <span class="description">
+                                Rental Management
+                            </span>
+                            <a class="nav-link {% if request.path == '/advance_tracker/' %}active{% endif %} " href="{% url 'advance_tracker' %}">
+                                <span class="icon">
+                                    <i class="bi bi-wallet2"></i>
+                                </span>
+
+                                <span class="description">
+                                    Advance Tracker
+                                </span>
+
+                                <a class="nav-link {% if request.path == '/report/' %}active{% endif %} " href="{% url 'report' %}">
+                                    <span class="icon">
+                                        <i class="bi bi-bar-chart-line"></i>
+                                    </span>
+
+                                    <span class="description">
+                                        Reports
+                                    </span>
+
+
+                                    <a class="nav-link {% if request.path == '/settings/' %}active{% endif %}" href="{% url 'settings' %}">
+                                        <span class="icon">
+                                            <i class="bi bi-gear"></i>
+                                        </span>
+
+                                        <span class="description">
+                                            Settings
+                                        </span>
+
+
+                                        <a class="nav-link"  href="{% url 'logout' %}">
+                                            <span class="icon">
+                                                <i class="bi bi-box-arrow-right"></i>
+                                            </span>
+
+                                            <span class="description">
+                                                Logout
+                                            </span>
+
+
+                                        </a>
+
+        </nav>
+
+    </div>
+
+    <main class="main-content">
+
+   <div class="display-4 position-absolute top-0 end-0 m-md-3 m-1 text-end" id="datetime">Loading...</div>
+
+<script>
+  function updateDateTime() {
+    const now = new Date();
+
+    const date = now.toLocaleDateString(undefined, {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    const time = now.toLocaleTimeString(undefined, {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true  // ensures AM/PM format
+    });
+
+    document.getElementById('datetime').textContent = `${date} — ${time}`;
+  }
+
+  updateDateTime(); // Initial call
+  setInterval(updateDateTime, 1000); // Update every second
+</script>
+
+
+        {% block main %}
+        {% endblock%}
+
+    </main>
+
+
+</body>
+
+</html>

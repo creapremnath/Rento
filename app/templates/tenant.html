@@ -1,0 +1,565 @@
+{% extends 'base.html' %}
+{% block main %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'property_filters.css' %}">
+
+<style>
+  /* Highlight selected card */
+  .selected-property {
+    border: 3px solid #635afe !important;
+    box-shadow: 0 0 10px #635afe;
+    transition: box-shadow 0.3s ease;
+  }
+</style>
+
+<div class="container py-5">
+  <h2 class="mb-4 text-center">Tenant Management</h2>
+
+  <!-- Filters -->
+  <div class="filters mb-4 row g-3 justify-content-center">
+    <div class="col-12 col-md-3">
+      <select id="filterType" class="form-select" aria-label="Filter by Type">
+        <option value="">All Types</option>
+        <option value="House">House</option>
+        <option value="Apartment">Apartment</option>
+        <option value="Condo">Condo</option>
+        <option value="Studio">Studio</option>
+      </select>
+    </div>
+
+    <div class="col-12 col-md-3">
+      <select id="filterStatus" class="form-select" aria-label="Filter by Status">
+        <option value="">All Status</option>
+        <option value="Available">Available</option>
+        <option value="Occupied">Occupied</option>
+        <option value="Pending">Pending</option>
+      </select>
+    </div>
+
+    <div class="col-12 col-md-4">
+      <label for="filterRent" class="form-label fw-semibold">Max Rent (₹): <span id="rentValue">100000</span></label>
+      <input type="range" id="filterRent" class="form-range" min="0" max="100000" step="5000" value="100000" />
+    </div>
+  </div>
+
+  <!-- Edit/Delete buttons (hidden until card selected) -->
+  <div id="editDeleteControls" class="mb-4 text-center" style="display:none;">
+    <button id="editPropertyBtn" class="btn btn-warning me-2">Edit Selected</button>
+    <button id="deletePropertyBtn" class="btn btn-danger">Delete Selected</button>
+  </div>
+
+  <!-- Properties grid -->
+  <div id="propertiesGrid" class="row g-4">
+
+    <!-- Add Property Card -->
+    <div class="col-lg-3 col-md-4 col-sm-6">
+      <div class="card add-property-card h-100 d-flex align-items-center justify-content-center text-center" 
+           style="cursor:pointer; border: 2px dashed #635afe;" 
+           data-bs-toggle="modal" data-bs-target="#addPropertyModal" title="Add New Property">
+        <div>
+          <div style="font-size: 3rem; color: #635afe">
+          <span class="icon">
+                            <i class="bi bi-person-fill-add"></i>
+                        </span>
+                        </div>
+          <div class="fw-semibold" style="color: #635afe; font-size: 1rem;">Add Tenant</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example Property Cards -->
+    <div class="col-lg-3 col-md-4 col-sm-6 property-card" data-type="Apartment" data-status="Available" data-rent="25000">
+      <div class="card shadow-sm h-100">
+        <img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTlVrXRQPReBNrOHs0PqpTFe__37xJOhfrtU5oJEUZUbxUqdhDimIxp8yImLg_jiuMaf3xkALOgzCWo635ql1quuQ" class="card-img-top" alt="Modern Apartment" />
+        <div class="card-body">
+          <h5 class="card-title">Modern Apartment</h5>
+          <p class="text-muted mb-1">Downtown, Cityville</p>
+          <p class="mb-0">
+            Type: Apartment<br />
+            Rent: ₹25,000 / month<br />
+            Status: <span class="badge bg-success">Available</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-4 col-sm-6 property-card" data-type="House" data-status="Occupied" data-rent="40000">
+      <div class="card shadow-sm h-100">
+        <img src="https://thumbs.dreamstime.com/z/exterior-accessory-dwelling-unit-shown-featuring-compact-house-wooden-deck-garden-lawn-exemplifying-370452983.jpg" class="card-img-top" alt="Cozy House" />
+        <div class="card-body">
+          <h5 class="card-title">Cozy House</h5>
+          <p class="text-muted mb-1">Suburb, Greenfield</p>
+          <p class="mb-0">
+            Type: House<br />
+            Rent: ₹40,000 / month<br />
+            Status: <span class="badge bg-danger">Occupied</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-4 col-sm-6 property-card" data-type="Condo" data-status="Pending" data-rent="55000">
+      <div class="card shadow-sm h-100">
+        <img src="https://media.istockphoto.com/id/147205632/photo/modern-home-with-swimming-pool.jpg?s=612x612&w=0&k=20&c=sxRQ398SxAjC4FrRombjl46oDGJVdy23T7i3RXO-mww=" class="card-img-top" alt="Luxury Condo" />
+        <div class="card-body">
+          <h5 class="card-title">Luxury Condo</h5>
+          <p class="text-muted mb-1">Beachside, Seaview</p>
+          <p class="mb-0">
+            Type: Condo<br />
+            Rent: ₹55,000 / month<br />
+            Status: <span class="badge bg-warning text-dark">Pending</span>
+          </p>
+        </div>
+      </div>
+    </div>
+<!-- Sample Models -->
+
+     <div class="col-lg-3 col-md-4 col-sm-6 property-card" data-type="Condo" data-status="Pending" data-rent="55000">
+      <div class="card shadow-sm h-100">
+        <img src="https://media.istockphoto.com/id/147205632/photo/modern-home-with-swimming-pool.jpg?s=612x612&w=0&k=20&c=sxRQ398SxAjC4FrRombjl46oDGJVdy23T7i3RXO-mww=" class="card-img-top" alt="Luxury Condo" />
+        <div class="card-body">
+          <h5 class="card-title">Luxury Condo</h5>
+          <p class="text-muted mb-1">Beachside, Seaview</p>
+          <p class="mb-0">
+            Type: Condo<br />
+            Rent: ₹55,000 / month<br />
+            Status: <span class="badge bg-warning text-dark">Pending</span>
+          </p>
+        </div>
+      </div>
+    </div>
+     <!-- sample models -->
+
+
+
+
+
+
+
+
+     <div class="col-lg-3 col-md-4 col-sm-6 property-card" data-type="Condo" data-status="Pending" data-rent="55000">
+      <div class="card shadow-sm h-100">
+        <img src="https://media.istockphoto.com/id/147205632/photo/modern-home-with-swimming-pool.jpg?s=612x612&w=0&k=20&c=sxRQ398SxAjC4FrRombjl46oDGJVdy23T7i3RXO-mww=" class="card-img-top" alt="Luxury Condo" />
+        <div class="card-body">
+          <h5 class="card-title">Luxury Condo</h5>
+          <p class="text-muted mb-1">Beachside, Seaview</p>
+          <p class="mb-0">
+            Type: Condo<br />
+            Rent: ₹55,000 / month<br />
+            Status: <span class="badge bg-warning text-dark">Pending</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+     <div class="col-lg-3 col-md-4 col-sm-6 property-card" data-type="Condo" data-status="Pending" data-rent="55000">
+      <div class="card shadow-sm h-100">
+        <img src="https://media.istockphoto.com/id/147205632/photo/modern-home-with-swimming-pool.jpg?s=612x612&w=0&k=20&c=sxRQ398SxAjC4FrRombjl46oDGJVdy23T7i3RXO-mww=" class="card-img-top" alt="Luxury Condo" />
+        <div class="card-body">
+          <h5 class="card-title">Luxury Condo</h5>
+          <p class="text-muted mb-1">Beachside, Seaview</p>
+          <p class="mb-0">
+            Type: Condo<br />
+            Rent: ₹55,000 / month<br />
+            Status: <span class="badge bg-warning text-dark">Pending</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+     <div class="col-lg-3 col-md-4 col-sm-6 property-card" data-type="Condo" data-status="Pending" data-rent="55000">
+      <div class="card shadow-sm h-100">
+        <img src="https://media.istockphoto.com/id/147205632/photo/modern-home-with-swimming-pool.jpg?s=612x612&w=0&k=20&c=sxRQ398SxAjC4FrRombjl46oDGJVdy23T7i3RXO-mww=" class="card-img-top" alt="Luxury Condo" />
+        <div class="card-body">
+          <h5 class="card-title">Luxury Condo</h5>
+          <p class="text-muted mb-1">Beachside, Seaview</p>
+          <p class="mb-0">
+            Type: Condo<br />
+            Rent: ₹55,000 / month<br />
+            Status: <span class="badge bg-warning text-dark">Pending</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+     <div class="col-lg-3 col-md-4 col-sm-6 property-card" data-type="Condo" data-status="Pending" data-rent="55000">
+      <div class="card shadow-sm h-100">
+        <img src="https://media.istockphoto.com/id/147205632/photo/modern-home-with-swimming-pool.jpg?s=612x612&w=0&k=20&c=sxRQ398SxAjC4FrRombjl46oDGJVdy23T7i3RXO-mww=" class="card-img-top" alt="Luxury Condo" />
+        <div class="card-body">
+          <h5 class="card-title">Luxury Condo</h5>
+          <p class="text-muted mb-1">Beachside, Seaview</p>
+          <p class="mb-0">
+            Type: Condo<br />
+            Rent: ₹55,000 / month<br />
+            Status: <span class="badge bg-warning text-dark">Pending</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+     <div class="col-lg-3 col-md-4 col-sm-6 property-card" data-type="Condo" data-status="Pending" data-rent="55000">
+      <div class="card shadow-sm h-100">
+        <img src="https://media.istockphoto.com/id/147205632/photo/modern-home-with-swimming-pool.jpg?s=612x612&w=0&k=20&c=sxRQ398SxAjC4FrRombjl46oDGJVdy23T7i3RXO-mww=" class="card-img-top" alt="Luxury Condo" />
+        <div class="card-body">
+          <h5 class="card-title">Luxury Condo</h5>
+          <p class="text-muted mb-1">Beachside, Seaview</p>
+          <p class="mb-0">
+            Type: Condo<br />
+            Rent: ₹55,000 / month<br />
+            Status: <span class="badge bg-warning text-dark">Pending</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    
+  </div>
+</div>
+
+<!-- Add Property Modal -->
+<div class="modal fade" id="addPropertyModal" tabindex="-1" aria-labelledby="addPropertyModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" id="addPropertyForm">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addPropertyModalLabel">Add New Property</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="propertyTitle" class="form-label">Property Title</label>
+          <input type="text" class="form-control" id="propertyTitle" required />
+        </div>
+        <div class="mb-3">
+          <label for="propertyLocation" class="form-label">Location</label>
+          <input type="text" class="form-control" id="propertyLocation" required />
+        </div>
+        <div class="mb-3">
+          <label for="propertyType" class="form-label">Type</label>
+          <select class="form-select" id="propertyType" required>
+            <option value="" disabled selected>Select Type</option>
+            <option>House</option>
+            <option>Apartment</option>
+            <option>Condo</option>
+            <option>Studio</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="propertyRent" class="form-label">Rent (₹ per month)</label>
+          <input type="number" class="form-control" id="propertyRent" min="0" required />
+        </div>
+        <div class="mb-3">
+          <label for="propertyStatus" class="form-label">Status</label>
+          <select class="form-select" id="propertyStatus" required>
+            <option value="" disabled selected>Select Status</option>
+            <option>Available</option>
+            <option>Occupied</option>
+            <option>Pending</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Add Property</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Property Modal -->
+<div class="modal fade" id="editPropertyModal" tabindex="-1" aria-labelledby="editPropertyModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" id="editPropertyForm">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editPropertyModalLabel">Edit Property</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editPropertyId" />
+        <div class="mb-3">
+          <label for="editPropertyTitle" class="form-label">Property Title</label>
+          <input type="text" class="form-control" id="editPropertyTitle" required />
+        </div>
+        <div class="mb-3">
+          <label for="editPropertyLocation" class="form-label">Location</label>
+          <input type="text" class="form-control" id="editPropertyLocation" required />
+        </div>
+        <div class="mb-3">
+          <label for="editPropertyType" class="form-label">Type</label>
+          <select class="form-select" id="editPropertyType" required>
+            <option value="" disabled>Select Type</option>
+            <option>House</option>
+            <option>Apartment</option>
+            <option>Condo</option>
+            <option>Studio</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="editPropertyRent" class="form-label">Rent (₹ per month)</label>
+          <input type="number" class="form-control" id="editPropertyRent" min="0" required />
+        </div>
+        <div class="mb-3">
+          <label for="editPropertyStatus" class="form-label">Status</label>
+          <select class="form-select" id="editPropertyStatus" required>
+            <option value="" disabled>Select Status</option>
+            <option>Available</option>
+            <option>Occupied</option>
+            <option>Pending</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Filter logic
+  const filterType = document.getElementById('filterType');
+  const filterStatus = document.getElementById('filterStatus');
+  const filterRent = document.getElementById('filterRent');
+  const rentValue = document.getElementById('rentValue');
+  const propertiesGrid = document.getElementById('propertiesGrid');
+  const cards = propertiesGrid.querySelectorAll('.property-card');
+
+  function filterProperties() {
+    const type = filterType.value;
+    const status = filterStatus.value;
+    const maxRent = +filterRent.value;
+
+    cards.forEach(card => {
+      const cardType = card.getAttribute('data-type');
+      const cardStatus = card.getAttribute('data-status');
+      const cardRent = +card.getAttribute('data-rent');
+
+      const typeMatch = !type || cardType === type;
+      const statusMatch = !status || cardStatus === status;
+      const rentMatch = cardRent <= maxRent;
+
+      if(typeMatch && statusMatch && rentMatch) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  filterType.addEventListener('change', filterProperties);
+  filterStatus.addEventListener('change', filterProperties);
+  filterRent.addEventListener('input', () => {
+    rentValue.textContent = filterRent.value;
+    filterProperties();
+  });
+
+  // Initialize filter
+  filterProperties();
+
+  // Add Property form submit - adds new card dynamically
+  document.getElementById('addPropertyForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const title = document.getElementById('propertyTitle').value.trim();
+    const location = document.getElementById('propertyLocation').value.trim();
+    const type = document.getElementById('propertyType').value;
+    const rent = document.getElementById('propertyRent').value;
+    const status = document.getElementById('propertyStatus').value;
+
+    if(!title || !location || !type || !rent || !status) {
+      alert('Please fill all fields.');
+      return;
+    }
+
+    // Create new card element
+    const colDiv = document.createElement('div');
+    colDiv.className = 'col-lg-3 col-md-4 col-sm-6 property-card';
+    colDiv.setAttribute('data-type', type);
+    colDiv.setAttribute('data-status', status);
+    colDiv.setAttribute('data-rent', rent);
+
+    // Simple placeholder image for new properties (you can enhance)
+    const imgUrl = 'https://via.placeholder.com/400x250.png?text=Property+Image';
+
+    colDiv.innerHTML = `
+      <div class="card shadow-sm h-100">
+        <img src="${imgUrl}" class="card-img-top" alt="${title}" />
+        <div class="card-body">
+          <h5 class="card-title">${title}</h5>
+          <p class="text-muted mb-1">${location}</p>
+          <p class="mb-0">
+            Type: ${type}<br>
+            Rent: ₹${Number(rent).toLocaleString()} / month<br>
+            Status: <span class="badge ${status === 'Available' ? 'bg-success' : status === 'Occupied' ? 'bg-danger' : 'bg-warning text-dark'}">${status}</span>
+          </p>
+        </div>
+      </div>
+    `;
+
+    propertiesGrid.appendChild(colDiv);
+
+    // Reset form and close modal
+    this.reset();
+    bootstrap.Modal.getInstance(document.getElementById('addPropertyModal')).hide();
+
+    // Re-bind selection event for new card
+    bindSelectionToCard(colDiv);
+
+    filterProperties();
+    alert('Property added!');
+  });
+
+  // Property selection, editing, and deletion
+  let selectedCard = null;
+
+  const editDeleteControls = document.getElementById('editDeleteControls');
+  const editBtn = document.getElementById('editPropertyBtn');
+  const deleteBtn = document.getElementById('deletePropertyBtn');
+  const editModalEl = document.getElementById('editPropertyModal');
+  const editModal = new bootstrap.Modal(editModalEl);
+
+  function clearSelection() {
+    if(selectedCard) {
+      selectedCard.classList.remove('selected-property');
+      selectedCard = null;
+      editDeleteControls.style.display = 'none';
+    }
+  }
+
+  function bindSelectionToCard(card) {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => {
+      if(selectedCard === card) {
+        // Deselect if clicked again
+        clearSelection();
+      } else {
+        clearSelection();
+        selectedCard = card;
+        card.classList.add('selected-property');
+        editDeleteControls.style.display = 'block';
+      }
+    });
+  }
+
+  // Bind selection to all existing cards on page load
+  cards.forEach(bindSelectionToCard);
+
+  // Edit button click handler
+  editBtn.addEventListener('click', () => {
+    if(!selectedCard) return;
+
+    const title = selectedCard.querySelector('.card-title').textContent;
+    const location = selectedCard.querySelector('.text-muted').textContent;
+    const type = selectedCard.getAttribute('data-type');
+    const status = selectedCard.getAttribute('data-status');
+    const rent = selectedCard.getAttribute('data-rent');
+
+    document.getElementById('editPropertyTitle').value = title;
+    document.getElementById('editPropertyLocation').value = location;
+    document.getElementById('editPropertyType').value = type;
+    document.getElementById('editPropertyStatus').value = status;
+    document.getElementById('editPropertyRent').value = rent;
+
+    editModal.show();
+  });
+
+  // Edit form submit handler
+  document.getElementById('editPropertyForm').addEventListener('submit', e => {
+    e.preventDefault();
+    if(!selectedCard) return;
+
+    const newTitle = document.getElementById('editPropertyTitle').value.trim();
+    const newLocation = document.getElementById('editPropertyLocation').value.trim();
+    const newType = document.getElementById('editPropertyType').value;
+    const newStatus = document.getElementById('editPropertyStatus').value;
+    const newRent = document.getElementById('editPropertyRent').value;
+
+    if(!newTitle || !newLocation || !newType || !newStatus || !newRent) {
+      alert('Please fill all fields.');
+      return;
+    }
+
+    // Update attributes and UI
+    selectedCard.setAttribute('data-type', newType);
+    selectedCard.setAttribute('data-status', newStatus);
+    selectedCard.setAttribute('data-rent', newRent);
+
+    const cardBody = selectedCard.querySelector('.card-body');
+    cardBody.querySelector('.card-title').textContent = newTitle;
+    cardBody.querySelector('.text-muted').textContent = newLocation;
+
+    // Update status badge
+    const statusBadge = cardBody.querySelector('.badge');
+    statusBadge.textContent = newStatus;
+    statusBadge.className = 'badge';
+    if(newStatus === 'Available') statusBadge.classList.add('bg-success');
+    else if(newStatus === 'Occupied') statusBadge.classList.add('bg-danger');
+    else if(newStatus === 'Pending') statusBadge.classList.add('bg-warning', 'text-dark');
+
+    // Update rent display (last <p>)
+    const pElements = cardBody.querySelectorAll('p');
+    pElements[pElements.length - 1].innerHTML = `
+      Type: ${newType}<br>
+      Rent: ₹${Number(newRent).toLocaleString()} / month<br>
+      Status: <span class="badge ${statusBadge.className}">${newStatus}</span>
+    `;
+
+    editModal.hide();
+    alert('Property updated!');
+
+    // Re-apply filter after update
+    filterProperties();
+  });
+
+  // Delete button click handler
+  deleteBtn.addEventListener('click', () => {
+    if(!selectedCard) return;
+    if(confirm('Are you sure you want to delete this property?')) {
+      selectedCard.remove();
+      clearSelection();
+      alert('Property deleted!');
+    }
+  });
+</script>
+{% endblock %}
