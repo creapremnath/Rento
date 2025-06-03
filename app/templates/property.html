@@ -13,7 +13,7 @@
 </style>
 
 <div class="container py-5">
-  <h2 class="mb-4 text-center">Properties Listing</h2>
+  <h2 class="mb-4 text-center">Properties Management</h2>
 
   <!-- Filters -->
   <div class="filters mb-4 row g-3 justify-content-center">
@@ -67,195 +67,45 @@
       </div>
     </div>
 
-    <!-- Example Property Cards -->
-    <div class="col-lg-3 col-md-4 col-sm-6 property-card" data-type="Apartment" data-status="Available" data-rent="25000">
-      <div class="card shadow-sm h-100">
-        <img src="https://thumbs.dreamstime.com/b/modern-house-interior-exterior-design-46517595.jpg" class="card-img-top" alt="Modern Apartment" />
-        <div class="card-body">
-          <h5 class="card-title">Modern Apartment</h5>
-          <p class="text-muted mb-1">Downtown, Cityville</p>
-          <p class="mb-0">
-            Type: Apartment<br />
-            Rent: ₹25,000 / month<br />
-            Status: <span class="badge bg-success">Available</span>
-          </p>
-        </div>
-      </div>
-    </div>
+{% for property in properties %}
+  <div class="col-lg-3 col-md-4 col-sm-6 property-card" 
+       data-type="Condo" 
+       data-status="{{ property.status }}" 
+       data-rent="{{ property.current_rent }}">
+       
+    <div class="card shadow-sm h-100">
+      {% if property.image %}
+        <img src="{{ property.image }}" class="card-img-top rounded-top" alt="{{ property.property_name }}" />
+      {% else %}
+        <img src="{% static 'default.jpg' %}" class="card-img-top rounded-top" alt="No Image Available" />
+      {% endif %}
 
-    <div class="col-lg-3 col-md-4 col-sm-6 property-card" data-type="House" data-status="Occupied" data-rent="40000">
-      <div class="card shadow-sm h-100">
-        <img src="https://thumbs.dreamstime.com/z/exterior-accessory-dwelling-unit-shown-featuring-compact-house-wooden-deck-garden-lawn-exemplifying-370452983.jpg" class="card-img-top" alt="Cozy House" />
-        <div class="card-body">
-          <h5 class="card-title">Cozy House</h5>
-          <p class="text-muted mb-1">Suburb, Greenfield</p>
-          <p class="mb-0">
-            Type: House<br />
-            Rent: ₹40,000 / month<br />
-            Status: <span class="badge bg-danger">Occupied</span>
-          </p>
-        </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ property.property_name }}</h5>
+        <p class="text-muted mb-1">{{ property.location }}</p>
+        <p class="mb-0">
+          Type: {{ property.property_type }}<br />
+          Rent: ₹{{ property.current_rent }} / month<br />
+          Status: 
+          <span class="badge 
+            {% if property.status == 'available' %}bg-success
+            {% elif property.status == 'pending' %}bg-warning text-dark
+            {% elif property.status == 'occupied' %}bg-danger
+            {% else %}bg-secondary{% endif %}">
+            {{ property.get_status_display }}
+          </span>
+        </p>
       </div>
     </div>
+  </div>
+{% endfor %}
 
-    <div class="col-lg-3 col-md-4 col-sm-6 property-card" data-type="Condo" data-status="Pending" data-rent="55000">
-      <div class="card shadow-sm h-100">
-        <img src="https://media.istockphoto.com/id/147205632/photo/modern-home-with-swimming-pool.jpg?s=612x612&w=0&k=20&c=sxRQ398SxAjC4FrRombjl46oDGJVdy23T7i3RXO-mww=" class="card-img-top" alt="Luxury Condo" />
-        <div class="card-body">
-          <h5 class="card-title">Luxury Condo</h5>
-          <p class="text-muted mb-1">Beachside, Seaview</p>
-          <p class="mb-0">
-            Type: Condo<br />
-            Rent: ₹55,000 / month<br />
-            Status: <span class="badge bg-warning text-dark">Pending</span>
-          </p>
-        </div>
-      </div>
-    </div>
-<!-- Sample Models -->
-
-     <div class="col-lg-3 col-md-4 col-sm-6 property-card" data-type="Condo" data-status="Pending" data-rent="55000">
-      <div class="card shadow-sm h-100">
-        <img src="https://media.istockphoto.com/id/147205632/photo/modern-home-with-swimming-pool.jpg?s=612x612&w=0&k=20&c=sxRQ398SxAjC4FrRombjl46oDGJVdy23T7i3RXO-mww=" class="card-img-top" alt="Luxury Condo" />
-        <div class="card-body">
-          <h5 class="card-title">Luxury Condo</h5>
-          <p class="text-muted mb-1">Beachside, Seaview</p>
-          <p class="mb-0">
-            Type: Condo<br />
-            Rent: ₹55,000 / month<br />
-            Status: <span class="badge bg-warning text-dark">Pending</span>
-          </p>
-        </div>
-      </div>
-    </div>
      <!-- sample models -->
 
-
-
-
-
-
-
-
-     <div class="col-lg-3 col-md-4 col-sm-6 property-card" data-type="Condo" data-status="Pending" data-rent="55000">
-      <div class="card shadow-sm h-100">
-        <img src="https://media.istockphoto.com/id/147205632/photo/modern-home-with-swimming-pool.jpg?s=612x612&w=0&k=20&c=sxRQ398SxAjC4FrRombjl46oDGJVdy23T7i3RXO-mww=" class="card-img-top" alt="Luxury Condo" />
-        <div class="card-body">
-          <h5 class="card-title">Luxury Condo</h5>
-          <p class="text-muted mb-1">Beachside, Seaview</p>
-          <p class="mb-0">
-            Type: Condo<br />
-            Rent: ₹55,000 / month<br />
-            Status: <span class="badge bg-warning text-dark">Pending</span>
-          </p>
-        </div>
-      </div>
-    </div>
-
-
-
-
-
-
-
-
-
-     <div class="col-lg-3 col-md-4 col-sm-6 property-card" data-type="Condo" data-status="Pending" data-rent="55000">
-      <div class="card shadow-sm h-100">
-        <img src="https://media.istockphoto.com/id/147205632/photo/modern-home-with-swimming-pool.jpg?s=612x612&w=0&k=20&c=sxRQ398SxAjC4FrRombjl46oDGJVdy23T7i3RXO-mww=" class="card-img-top" alt="Luxury Condo" />
-        <div class="card-body">
-          <h5 class="card-title">Luxury Condo</h5>
-          <p class="text-muted mb-1">Beachside, Seaview</p>
-          <p class="mb-0">
-            Type: Condo<br />
-            Rent: ₹55,000 / month<br />
-            Status: <span class="badge bg-warning text-dark">Pending</span>
-          </p>
-        </div>
-      </div>
-    </div>
-
-
-
-
-
-
-
-
-
-     <div class="col-lg-3 col-md-4 col-sm-6 property-card" data-type="Condo" data-status="Pending" data-rent="55000">
-      <div class="card shadow-sm h-100">
-        <img src="https://media.istockphoto.com/id/147205632/photo/modern-home-with-swimming-pool.jpg?s=612x612&w=0&k=20&c=sxRQ398SxAjC4FrRombjl46oDGJVdy23T7i3RXO-mww=" class="card-img-top" alt="Luxury Condo" />
-        <div class="card-body">
-          <h5 class="card-title">Luxury Condo</h5>
-          <p class="text-muted mb-1">Beachside, Seaview</p>
-          <p class="mb-0">
-            Type: Condo<br />
-            Rent: ₹55,000 / month<br />
-            Status: <span class="badge bg-warning text-dark">Pending</span>
-          </p>
-        </div>
-      </div>
-    </div>
-
-
-
-
-
-
-
-
-
-     <div class="col-lg-3 col-md-4 col-sm-6 property-card" data-type="Condo" data-status="Pending" data-rent="55000">
-      <div class="card shadow-sm h-100">
-        <img src="https://media.istockphoto.com/id/147205632/photo/modern-home-with-swimming-pool.jpg?s=612x612&w=0&k=20&c=sxRQ398SxAjC4FrRombjl46oDGJVdy23T7i3RXO-mww=" class="card-img-top" alt="Luxury Condo" />
-        <div class="card-body">
-          <h5 class="card-title">Luxury Condo</h5>
-          <p class="text-muted mb-1">Beachside, Seaview</p>
-          <p class="mb-0">
-            Type: Condo<br />
-            Rent: ₹55,000 / month<br />
-            Status: <span class="badge bg-warning text-dark">Pending</span>
-          </p>
-        </div>
-      </div>
-    </div>
-
-
-
-
-
-
-
-
-
-
-     <div class="col-lg-3 col-md-4 col-sm-6 property-card" data-type="Condo" data-status="Pending" data-rent="55000">
-      <div class="card shadow-sm h-100">
-        <img src="https://media.istockphoto.com/id/147205632/photo/modern-home-with-swimming-pool.jpg?s=612x612&w=0&k=20&c=sxRQ398SxAjC4FrRombjl46oDGJVdy23T7i3RXO-mww=" class="card-img-top" alt="Luxury Condo" />
-        <div class="card-body">
-          <h5 class="card-title">Luxury Condo</h5>
-          <p class="text-muted mb-1">Beachside, Seaview</p>
-          <p class="mb-0">
-            Type: Condo<br />
-            Rent: ₹55,000 / month<br />
-            Status: <span class="badge bg-warning text-dark">Pending</span>
-          </p>
-        </div>
-      </div>
-    </div>
-
-
-
-
-
-
-
-
-
-    
   </div>
 </div>
+
+
 
 <!-- Add Property Modal -->
 <div class="modal fade" id="addPropertyModal" tabindex="-1" aria-labelledby="addPropertyModalLabel" aria-hidden="true">

@@ -1,13 +1,14 @@
 from django.shortcuts import render,HttpResponse
+from .models import Property
 
 # Create your views here.
 
 def home(request):
     return render(request,'dashboard.html')
 
-
 def property(request):
-    return render(request,'property.html')
+    properties = Property.objects.all()  # fetch all property records
+    return render(request, 'property.html', {'properties': properties}) 
 
 def rent(request):
     return render(request,'rent.html')
@@ -21,7 +22,8 @@ def settings(request):
 
 
 def tenant(request):
-    return render(request,'tenant.html')
+    properties = Property.objects.all()  # fetch all property records
+    return render(request, 'tenant.html', {'properties': properties}) 
 
 
 def advance_tracker(request):
