@@ -5,3 +5,4 @@ from .models import *
 
 
 admin.site.register(Property)
+admin.site.register(User)

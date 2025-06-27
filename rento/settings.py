@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+    'background_task',
 
 ]
 
@@ -126,3 +127,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 STATIC_URL = '/static/'
+
+
+
+LOGIN_REDIRECT_URL = '/home/'
+LOGOUT_REDIRECT_URL = '/'
+
+
+
+AUTH_USER_MODEL = 'app.User'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'creativepremnath@gmail.com'
+EMAIL_HOST_PASSWORD = 'eaarfiirpyyanmvg' # Your App Password
+EMAIL_PORT = 587 # Recommended for TLS
+EMAIL_USE_TLS = True # Use TLS for port 587
+EMAIL_USE_SSL = False # Set to False if using TLS
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER # Good practice to set this

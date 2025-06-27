@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tenant Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f8f9fa;
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #343a40;
+    }
+    .welcome-msg {
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+    .card-title {
+      font-weight: 600;
+    }
+    .info-box {
+      background: white;
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      transition: box-shadow 0.3s ease;
+      height: 100%;
+    }
+    .info-box:hover {
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+    }
+    .section-header {
+      border-bottom: 2px solid #635afe;
+      padding-bottom: 0.25rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+      color: #635afe;
+    }
+    .btn-primary {
+      background-color: #635afe;
+      border: none;
+    }
+    .btn-primary:hover {
+      background-color: #473fd7;
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-4">
+    <h2 class="welcome-msg">Welcome back, Premnath 👋</h2>
+
+    <div class="row g-4">
+      <!-- Current Lease -->
+      <div class="col-md-6 col-lg-4">
+        <div class="info-box">
+          <h5 class="card-title section-header">Your Current Lease</h5>
+          <p><strong>123 Main St, Apartment 4B</strong></p>
+          <p>Lease: <span class="text-muted">Jan 1, 2024 – Dec 31, 2024</span></p>
+          <p>Monthly Rent: <strong>₹12,000</strong></p>
+          <p>Next Rent Due: <strong>July 5, 2025</strong></p>
+        </div>
+      </div>
+
+      <!-- Payment Status -->
+      <div class="col-md-6 col-lg-4">
+        <div class="info-box">
+          <h5 class="card-title section-header">Payment Status</h5>
+          <p>Rent Due This Month: <strong>₹12,000</strong></p>
+          <p>Last Payment: <strong>₹12,000</strong> on June 5, 2025</p>
+          <button class="btn btn-primary mt-3 w-100">Pay Rent</button>
+        </div>
+      </div>
+
+      <!-- Maintenance Requests -->
+      <div class="col-md-12 col-lg-4">
+        <div class="info-box">
+          <h5 class="card-title section-header">Maintenance Requests</h5>
+          <p>Open Requests: <strong>2</strong></p>
+          <ul>
+            <li>Kitchen faucet leaking <span class="badge bg-warning text-dark">In progress</span></li>
+            <li>AC not cooling <span class="badge bg-secondary">Pending</span></li>
+          </ul>
+          <button class="btn btn-primary mt-3 w-100">Create New Request</button>
+        </div>
+      </div>
+
+      <!-- Announcements -->
+      <div class="col-md-6">
+        <div class="info-box">
+          <h5 class="card-title section-header">Announcements</h5>
+          <ul>
+            <li>Pool closed for maintenance from July 1 to July 10.</li>
+            <li>Annual fire safety inspection on July 15.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="col-md-6">
+        <div class="info-box">
+          <h5 class="card-title section-header">Contact Info</h5>
+          <p><strong>Property Manager:</strong> John Doe</p>
+          <p><strong>Phone:</strong> +91-9876543210</p>
+          <p><strong>Email:</strong> <a href="mailto:manager@property.com">manager@property.com</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
